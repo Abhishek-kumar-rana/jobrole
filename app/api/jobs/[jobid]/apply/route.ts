@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  context: { params: { jobid: string } }
+  { params }: { params: { jobid: string } }
 ) {
   const session = await auth();
 
@@ -12,8 +12,7 @@ export async function POST(
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
 
-  const { jobid } = await context.params;
-  console.log("Job ID:", jobid);
+  const { jobid } = params;
 
   if (!jobid) {
     return new NextResponse("Missing job ID", { status: 400 });

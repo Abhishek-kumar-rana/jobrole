@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function POST(
-  req: Request,
-  { params }:{ params: { jobid: string } }
+  req: NextRequest,
+  context: { params: { jobid: string } }
 ) {
   const session = await auth();
 
@@ -12,7 +12,7 @@ export async function POST(
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
 
-  const { jobid } = params;
+  const jobid = context.params.jobid;
 
   if (!jobid) {
     return new NextResponse("Missing job ID", { status: 400 });
